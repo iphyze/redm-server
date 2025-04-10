@@ -62,6 +62,14 @@ $routes = [
     '/logs/getAllLogs' => 'routes/logs/getAllLogs.php',
     '/categories/createCategory' => 'routes/categories/createCategory.php',
     '/categories/editCategory' => 'routes/categories/editCategory.php',
+    '/categories/getAllCategory' => 'routes/categories/getAllCategory.php',
+    '/categories/deleteCategory' => 'routes/categories/deleteCategory.php',
+    '/projects/createProject' => 'routes/projects/createProject.php',
+    '/projects/editProject' => 'routes/projects/editProject.php',
+    '/projects/getAllProject' => 'routes/projects/getAllProject.php',
+    '/projects/deleteProject' => 'routes/projects/deleteProject.php',
+    '/contacts/createContact' => 'routes/contacts/createContact.php',
+    '/contacts/editContact' => 'routes/contacts/editContact.php',
 ];
 
 

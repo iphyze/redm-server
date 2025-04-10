@@ -23,12 +23,12 @@
     
         $data = json_decode(file_get_contents("php://input"), true);
         
-        if (!isset($data['categoryId'])) {
-            throw new Exception("categoryId is required", 400);
+        if (!isset($data['projectId'])) {
+            throw new Exception("projectId is required", 400);
         }
     
-        if (!intval($data['categoryId'])) {
-            throw new Exception("categoryId must be a number", 400);
+        if (!intval($data['projectId'])) {
+            throw new Exception("projectId must be a number", 400);
         }
     
         if (!isset($data['name'])) {
@@ -40,7 +40,7 @@
         }
 
         
-        $categoryId = intval(trim($data['categoryId']));
+        $projectId = intval(trim($data['projectId']));
         $name = trim($data['name']);
         $description = trim($data['description']);
         $userEmail = trim($data['userEmail']);
@@ -50,29 +50,29 @@
         $datetime = new DateTime('now', new DateTimeZone('Africa/Lagos'));
         $updatedAt = $datetime->format('Y-m-d H:i:s');
         
-        // Check if category exists
-        $checkId = $conn->prepare("SELECT * FROM categories WHERE id = ?");
-        $checkId->bind_param("i", $categoryId);
+        // Check if project exists
+        $checkId = $conn->prepare("SELECT * FROM projects WHERE id = ?");
+        $checkId->bind_param("i", $projectId);
         $checkId->execute();
         $checkIdResult = $checkId->get_result();
     
         if ($checkIdResult->num_rows === 0) {
-            throw new Exception("Category not found", 404);
+            throw new Exception("Project not found", 404);
         }
     
         // Check for duplicate name
-        $checkStmt = $conn->prepare("SELECT * FROM categories WHERE name = ? && id != ?");
-        $checkStmt->bind_param("si", $name, $categoryId);
+        $checkStmt = $conn->prepare("SELECT * FROM projects WHERE name = ? && id != ?");
+        $checkStmt->bind_param("si", $name, $projectId);
         $checkStmt->execute();
         $checkStmtResult = $checkStmt->get_result();
     
         if ($checkStmtResult->num_rows > 0) {
-            throw new Exception($name . " already exists as category.", 400);
+            throw new Exception($name . " already exists as project.", 400);
         }
     
-        // Update category
-        $stmt = $conn->prepare("UPDATE categories SET name = ?, description = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
-        $stmt->bind_param("ssssi", $name, $description, $updatedBy, $updatedAt, $categoryId);
+        // Update project
+        $stmt = $conn->prepare("UPDATE projects SET name = ?, description = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
+        $stmt->bind_param("ssssi", $name, $description, $updatedBy, $updatedAt, $projectId);
         
         if (!$stmt) {
             throw new Exception("Database error: Failed to prepare statement", 500);
@@ -80,8 +80,8 @@
         
         if ($stmt->execute()) {
             // Fetch the updated data with a new query
-            $selectStmt = $conn->prepare("SELECT * FROM categories WHERE id = ?");
-            $selectStmt->bind_param("i", $categoryId);
+            $selectStmt = $conn->prepare("SELECT * FROM projects WHERE id = ?");
+            $selectStmt->bind_param("i", $projectId);
             $selectStmt->execute();
             $result = $selectStmt->get_result();
             $updatedData = $result->fetch_assoc();
@@ -89,7 +89,7 @@
             http_response_code(200);
             echo json_encode([
                 "status" => "Success",
-                "message" => "Category has been updated successfully!",
+                "message" => $name . " has been updated successfully!",
                 "data" => [
                     "id" => $updatedData['id'],
                     "name" => $updatedData['name'],
@@ -102,7 +102,7 @@
             
             $selectStmt->close();
         } else {
-            throw new Exception("Failed to update category!", 500);
+            throw new Exception("Failed to update project!", 500);
         }
     
         $stmt->close();

@@ -45,20 +45,20 @@ try{
     $updatedBy = $userEmail;
     
 
-    $checkStmt = $conn->prepare("SELECT * FROM categories WHERE name = ?");
+    $checkStmt = $conn->prepare("SELECT * FROM projects WHERE name = ?");
     $checkStmt->bind_param("s", $name);
     $checkStmt->execute();
     $checkStmtResult = $checkStmt->get_result();
 
 
     if ($checkStmtResult->num_rows > 0) {
-        throw new Exception($name . " already exists as category.", 400);
+        throw new Exception($name . " already exists as a project.", 400);
     }
 
 
     
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO categories (name, description, createdBy, updatedBy) 
+    $stmt = $conn->prepare("INSERT INTO projects (name, description, createdBy, updatedBy) 
                             VALUES (?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
@@ -77,7 +77,7 @@ try{
             http_response_code(200);
             echo json_encode([
             "status" => "Success",
-            "message" => "Category has been created successfully!",
+            "message" => $name . " has been created successfully!",
             "data" => [
                 "id" => $id,
                 "name" => $name,
