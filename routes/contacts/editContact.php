@@ -22,19 +22,19 @@
         }
 
         // all fields
-        // organization, representative, tel, email, projectId, projectTitle, agentId, categoryName, comment, userEmail
+        // organization, representative, tel, email, projectId, projectTitle, contactId, categoryName, comment, userEmail
         // required fields
-        // organization, representative, tel, email, projectId, projectTitle, agentId, categoryName, userEmail
+        // organization, representative, tel, email, projectId, projectTitle, contactId, categoryName, userEmail
 
     
         $data = json_decode(file_get_contents("php://input"), true);
         
-        if (!isset($data['agentId'])) {
-            throw new Exception("agentId is required", 400);
+        if (!isset($data['contactId'])) {
+            throw new Exception("contactId is required", 400);
         }
     
-        if (!intval($data['agentId'])) {
-            throw new Exception("agentId must be a number", 400);
+        if (!intval($data['contactId'])) {
+            throw new Exception("contactId must be a number", 400);
         }
     
         if (!isset($data['organization'])) {
@@ -53,7 +53,7 @@
             throw new Exception("User Email is required!", 400);
         }
 
-        $agentId = intval(trim($data['agentId']));
+        $contactId = intval(trim($data['contactId']));
         $organization = trim($data['organization']);
         $representative = trim($data['representative']);
         $tel = trim($data['tel']);
@@ -73,7 +73,7 @@
         
         // Check if category exists
         $checkId = $conn->prepare("SELECT * FROM contacts WHERE id = ?");
-        $checkId->bind_param("i", $agentId);
+        $checkId->bind_param("i", $contactId);
         $checkId->execute();
         $checkIdResult = $checkId->get_result();
     
@@ -83,7 +83,7 @@
     
         // Check for duplicate name
         $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? AND projectId = ? AND id != ?");
-        $checkStmt->bind_param("sii", $organization, $projectId, $agentId);
+        $checkStmt->bind_param("sii", $organization, $projectId, $contactId);
         $checkStmt->execute();
         $checkStmtResult = $checkStmt->get_result();
     
@@ -94,7 +94,7 @@
         // Update contact
         $stmt = $conn->prepare("UPDATE contacts SET organization = ?, representative = ?, 
         tel = ?, email = ?, projectId = ?, projectTitle = ?, categoryId = ?, categoryName = ?, comment = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
-        $stmt->bind_param("ssssisissssi", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $updatedBy, $updatedAt, $agentId);
+        $stmt->bind_param("ssssisissssi", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $updatedBy, $updatedAt, $contactId);
         
         if (!$stmt) {
             throw new Exception("Database error: Failed to prepare statement", 500);
@@ -103,7 +103,7 @@
         if ($stmt->execute()) {
             // Fetch the updated data with a new query
             $selectStmt = $conn->prepare("SELECT * FROM contacts WHERE id = ?");
-            $selectStmt->bind_param("i", $agentId);
+            $selectStmt->bind_param("i", $contactId);
             $selectStmt->execute();
             $result = $selectStmt->get_result();
             $updatedData = $result->fetch_assoc();

@@ -44,9 +44,8 @@ try {
     $log = $result->fetch_assoc();
     $checkStmt->close();
     
-    // Check time restriction for Admin role
-    if ($loggedInUserRole === 'Admin') {
-        // Create DateTime objects with Nigerian timezone
+    // Time restriction check - only apply to non-Super_Admin users
+    if ($loggedInUserRole !== 'Super_Admin') {
         $updatedAt = new DateTime($log['updatedAt'], new DateTimeZone('Africa/Lagos'));
         $now = new DateTime('now', new DateTimeZone('Africa/Lagos'));
         
@@ -97,6 +96,9 @@ try {
     $updateStmt->bind_param("ssssssssssss", $message, $title, $userId, $firstName, $lastName, $email, $projectId, $projectTitle, $clientId, $clientName, $updatedBy, $messageId);
     
     if ($updateStmt->execute()) {
+
+        $currentTime = new DateTime('now', new DateTimeZone('Africa/Lagos'));
+
         http_response_code(200);
         echo json_encode([
             "status" => "Success",
@@ -114,9 +116,9 @@ try {
                 "clientId" => $clientId,
                 "clientName" => $clientName,
                 "updatedBy" => $updatedBy,
-                "updatedAt" => $updatedAt->format('Y-m-d H:i:s'),
-                "currentTime" => $now->format('Y-m-d H:i:s'),
-                "timeDiffMinutes" => $timeDiff
+                "updatedAt" => $loggedInUserRole !== 'Super_Admin' ? $updatedAt->format('Y-m-d H:i:s') : $currentTime->format('Y-m-d H:i:s'),
+                "currentTime" => $loggedInUserRole !== 'Super_Admin' ? $now->format('Y-m-d H:i:s') : null,
+                "timeDiffMinutes" => $loggedInUserRole !== 'Super_Admin' ? $timeDiff : null,
             ],
         ]);
     } else {

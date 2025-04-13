@@ -65,6 +65,7 @@ try{
     $company = trim($data['company']);
     $position = trim($data['position']);
     $clientCategory = trim($data['clientCategory']);
+    $agent = trim($data['agent']);
     $project = trim($data['project']);
     $projectId = trim($data['projectId']);
     $userEmail = trim($data['userEmail']);
@@ -83,13 +84,13 @@ try{
     }
 
 
-    $checkStmt = $conn->prepare("SELECT * FROM clients WHERE firstName = ? && lastName = ? && number = ? && id != ?");
+    $checkStmt = $conn->prepare("SELECT * FROM clients WHERE firstName = ? && lastName = ? && number = ? && projectId = ? && id != ?");
     
     if (!$checkStmt) {
         throw new Exception("Database error: Failed to prepare check statement", 500);
     }
 
-    $checkStmt->bind_param("ssss", $firstName, $lastName, $number, $clientId);
+    $checkStmt->bind_param("sssss", $firstName, $lastName, $number, $projectId, $clientId);
     $checkStmt->execute();
     $result = $checkStmt->get_result();
     
@@ -99,10 +100,10 @@ try{
 
     
     $stmt = $conn->prepare("UPDATE clients SET firstName = ?, lastName = ?, otherName = ?, title = ?, firstContactDate = ?, number = ?, email = ?,
-    company = ?, position = ?, clientCategory = ?, project = ?, projectId = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
+    company = ?, position = ?, clientCategory = ?, project = ?, projectId = ?, updatedBy = ?, updatedAt = ?, agent = ? WHERE id = ?");
 
-    $stmt->bind_param("sssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
-    $email, $company, $position, $clientCategory, $project, $projectId, $updatedBy, $updatedAt, $clientId);
+    $stmt->bind_param("ssssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
+    $email, $company, $position, $clientCategory, $project, $projectId, $updatedBy, $updatedAt, $agent, $clientId);
     
     
     if (!$stmt) {
@@ -131,7 +132,8 @@ try{
                 "projectId" => $projectId,
                 "position" => $position,
                 "updatedBy" => $updatedBy,
-                "updatedAt" => $updatedAt
+                "updatedAt" => $updatedAt,
+                "agent" => $agent
             ],
         ]);
     

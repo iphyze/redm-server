@@ -63,6 +63,7 @@ try{
     $userEmail = trim($data['userEmail']);
     $createdBy = $userEmail;
     $updatedBy = $userEmail;
+    $contactType = "Primary";
     
 
     $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? && projectId = ?");
@@ -78,11 +79,11 @@ try{
 
     
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO contacts (organization, representative, tel, email, projectId, projectTitle, categoryId, categoryName, comment, createdBy, updatedBy) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO contacts (organization, representative, tel, email, projectId, projectTitle, categoryId, categoryName, comment, createdBy, updatedBy, contactType) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("ssssisissss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy);
+    $stmt->bind_param("ssssisisssss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy);
     
     
     if (!$stmt) {
@@ -110,7 +111,8 @@ try{
                 "categoryName" => $categoryName,
                 "comment" => $comment,
                 "createdBy" => $createdBy,
-                "updatedBy" => $updatedBy
+                "updatedBy" => $updatedBy,
+                "contactType" => $contactType
             ],
         ]);
     

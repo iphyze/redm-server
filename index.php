@@ -57,10 +57,13 @@ $routes = [
     '/logs/createLog' => 'routes/logs/createLog.php',
     '/logs/setReminder' => 'routes/logs/setReminder.php',
     '/logs/editLog' => 'routes/logs/editLog.php',
+    '/logs/deleteLog' => 'routes/logs/deleteLog.php',
+    '/logs/restoreLog' => 'routes/logs/restoreLog.php',
     '/clients/createClient' => 'routes/clients/createClient.php',
     '/clients/editClient' => 'routes/clients/editClient.php',
     '/clients/getAllClients' => 'routes/clients/getAllClients.php',
     '/clients/deleteClient' => 'routes/clients/deleteClient.php',
+    '/clients/restoreClient' => 'routes/clients/restoreClient.php',
     '/logs/getAllLogs' => 'routes/logs/getAllLogs.php',
     '/categories/createCategory' => 'routes/categories/createCategory.php',
     '/categories/editCategory' => 'routes/categories/editCategory.php',
@@ -73,6 +76,8 @@ $routes = [
     '/contacts/createContact' => 'routes/contacts/createContact.php',
     '/contacts/editContact' => 'routes/contacts/editContact.php',
     '/contacts/getAllContacts' => 'routes/contacts/getAllContacts.php',
+    '/contacts/deleteContact' => 'routes/contacts/deleteContact.php',
+    '/contacts/restoreContact' => 'routes/contacts/restoreContact.php',
 ];
 
 
@@ -89,6 +94,8 @@ $dynamicRoutes = [
     '/logs/getSingleClientLog/(.+)' => 'routes/logs/getSingleClientLog.php',
     '/contacts/contactsByCategory/(.+)' => 'routes/contacts/contactsByCategory.php',
     '/clients/getSingleClient/(.+)' => 'routes/clients/getSingleClient.php',
+    '/projects/getSingleProject/(.+)' => 'routes/projects/getSingleProject.php',
+    '/contacts/getSingleContact/(.+)' => 'routes/contacts/getSingleContact.php',
 ];
 
 

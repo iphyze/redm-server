@@ -42,16 +42,21 @@ try{
     $projectTitle = trim($data['projectTitle']);
     $clientId = trim($data['clientId']);
     $clientName = trim($data['clientName']);
+    $contactType = trim($data['contactType']);
     $createdBy = $email;
     $updatedBy = $email;
+
+
+    date_default_timezone_set('Africa/Lagos');
+    $createdAt = date('Y-m-d H:i:s');
     
     
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO logs (message, title, userId, firstName, lastName, email, projectId, projectTitle, clientId, clientName, createdBy, updatedBy) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO logs (message, title, userId, firstName, lastName, email, projectId, projectTitle, clientId, clientName, createdBy, updatedBy, contactType) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("ssssssssssss", $message, $title, $userId, $firstName, $lastName, $email, $projectId, $projectTitle, $clientId, $clientName, $createdBy, $updatedBy);
+    $stmt->bind_param("sssssssssssss", $message, $title, $userId, $firstName, $lastName, $email, $projectId, $projectTitle, $clientId, $clientName, $createdBy, $updatedBy, $contactType);
     
     
     if (!$stmt) {
@@ -80,7 +85,9 @@ try{
                 "clientId" => $clientId,
                 "clientName" => $clientName,
                 "createdBy" => $createdBy,
-                "updatedBy" => $updatedBy
+                "updatedBy" => $updatedBy,
+                "createdAt" => $createdAt,
+                "contactType" => $contactType
             ],
         ]);
     

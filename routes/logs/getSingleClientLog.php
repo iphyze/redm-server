@@ -1,5 +1,7 @@
 <?php
 
+use Respect\Validation\Rules\Length;
+
 require 'vendor/autoload.php';
 require_once 'includes/connection.php';
 require_once 'includes/authMiddleware.php';
@@ -27,40 +29,44 @@ try{
     }
 
     
-    $clientId = $_GET['params'];
-    
+    $clientId = $_GET['params'][0];
+
     if (!is_numeric($clientId)) {
         throw new Exception("Valid user ID is required", 400);
-        exit;
     }
+
+
+    if(!isset($_GET['params'][1]) || empty($_GET['params'][1])){
+        throw new Exception("ContactType is required", 400);
+    }else{
+        $contactType = $_GET['params'][1];
+    }
+
 
     $clientId = intval($clientId);
 
 
-    $query = $conn->prepare("SELECT * FROM logs WHERE clientId = ? ORDER BY createdAt DESC");
+    $query = $conn->prepare("SELECT * FROM logs WHERE clientId = ? && contactType = ? ORDER BY createdAt DESC");
     
     if (!$query) {
         throw new Exception("Database error: Failed to prepare statement", 500);
         exit;
     }
 
-    $query->bind_param("i", $clientId);
+    $query->bind_param("is", $clientId, $contactType);
     $query->execute();
 
     $result = $query->get_result();
 
-    if ($result->num_rows > 0) {
-        $logs = $result->fetch_all(MYSQLI_ASSOC);
+    $num = $result->num_rows;
 
+        $logs = $result->fetch_all(MYSQLI_ASSOC);
         http_response_code(200);
         echo json_encode([
             "status" => "Success",
-            "message" => "Logs retrieved successfully!",
+            "message" => $num > 0 ? "Logs retrieved successfully!" : "No logs found for this client!",
             "data" => $logs,
         ]);
-    } else {
-        throw new Exception("No logs found for this client", 404);
-    }
 
     $query->close();
     
