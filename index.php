@@ -59,6 +59,8 @@ $routes = [
     '/logs/editLog' => 'routes/logs/editLog.php',
     '/clients/createClient' => 'routes/clients/createClient.php',
     '/clients/editClient' => 'routes/clients/editClient.php',
+    '/clients/getAllClients' => 'routes/clients/getAllClients.php',
+    '/clients/deleteClient' => 'routes/clients/deleteClient.php',
     '/logs/getAllLogs' => 'routes/logs/getAllLogs.php',
     '/categories/createCategory' => 'routes/categories/createCategory.php',
     '/categories/editCategory' => 'routes/categories/editCategory.php',
@@ -70,6 +72,7 @@ $routes = [
     '/projects/deleteProject' => 'routes/projects/deleteProject.php',
     '/contacts/createContact' => 'routes/contacts/createContact.php',
     '/contacts/editContact' => 'routes/contacts/editContact.php',
+    '/contacts/getAllContacts' => 'routes/contacts/getAllContacts.php',
 ];
 
 
@@ -84,6 +87,8 @@ if (array_key_exists($relativePath, $routes)) {
 
 $dynamicRoutes = [
     '/logs/getSingleClientLog/(.+)' => 'routes/logs/getSingleClientLog.php',
+    '/contacts/contactsByCategory/(.+)' => 'routes/contacts/contactsByCategory.php',
+    '/clients/getSingleClient/(.+)' => 'routes/clients/getSingleClient.php',
 ];
 
 

@@ -67,13 +67,13 @@ try{
     $updatedBy = $userEmail;
 
 
-    $checkStmt = $conn->prepare("SELECT * FROM clients WHERE firstName = ? && lastName = ? && number = ?");
+    $checkStmt = $conn->prepare("SELECT * FROM clients WHERE firstName = ? && lastName = ? && number = ? && projectId = ?");
     
     if (!$checkStmt) {
         throw new Exception("Database error: Failed to prepare check statement", 500);
     }
 
-    $checkStmt->bind_param("sss", $firstName, $lastName, $number);
+    $checkStmt->bind_param("ssss", $firstName, $lastName, $number, $projectId);
     $checkStmt->execute();
     $result = $checkStmt->get_result();
     
