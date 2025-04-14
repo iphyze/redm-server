@@ -55,8 +55,10 @@ $routes = [
     '/auth/login' => 'routes/auth/login.php',
     '/auth/register' => 'routes/auth/register.php',
     '/logs/createLog' => 'routes/logs/createLog.php',
+    '/logs/createLogResponse' => 'routes/logs/createLogResponse.php',
     '/logs/setReminder' => 'routes/logs/setReminder.php',
     '/logs/editLog' => 'routes/logs/editLog.php',
+    '/logs/editResponseLog' => 'routes/logs/editResponseLog.php',
     '/logs/deleteLog' => 'routes/logs/deleteLog.php',
     '/logs/restoreLog' => 'routes/logs/restoreLog.php',
     '/clients/createClient' => 'routes/clients/createClient.php',
@@ -65,6 +67,7 @@ $routes = [
     '/clients/deleteClient' => 'routes/clients/deleteClient.php',
     '/clients/restoreClient' => 'routes/clients/restoreClient.php',
     '/logs/getAllLogs' => 'routes/logs/getAllLogs.php',
+    '/logs/getAllLogResponses' => 'routes/logs/getAllLogResponses.php',
     '/categories/createCategory' => 'routes/categories/createCategory.php',
     '/categories/editCategory' => 'routes/categories/editCategory.php',
     '/categories/getAllCategory' => 'routes/categories/getAllCategory.php',
@@ -96,6 +99,7 @@ $dynamicRoutes = [
     '/clients/getSingleClient/(.+)' => 'routes/clients/getSingleClient.php',
     '/projects/getSingleProject/(.+)' => 'routes/projects/getSingleProject.php',
     '/contacts/getSingleContact/(.+)' => 'routes/contacts/getSingleContact.php',
+    '/logs/getSingleLogResponses/(.+)' => 'routes/logs/getSingleLogResponses.php',
 ];
 
 
