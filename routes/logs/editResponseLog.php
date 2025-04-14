@@ -85,13 +85,13 @@ try {
         throw new Exception("Database error: Failed to prepare update statement", 500);
     }
     
-    // $updatedAt = new DateTime('now', new DateTimeZone('Africa/Lagos'));
-
-
-    $updateStmt->bind_param("ssissss", $message, $title, $logId, $firstName, $lastName, $updatedBy, $updatedAt);
+    
+    
+    $updateStmt->bind_param("ssisssi", $message, $title, $logId, $firstName, $lastName, $updatedBy, $responseId);
     
     if ($updateStmt->execute()) {
-
+        
+        $updatedAt = new DateTime('now', new DateTimeZone('Africa/Lagos'));
 
         http_response_code(200);
         echo json_encode([
@@ -105,6 +105,7 @@ try {
                 "firstName" => $firstName,
                 "lastName" => $lastName,
                 "updatedBy" => $updatedBy,
+                "updatedAt" => $updatedAt->format('Y-m-d H:i:s')
             ],
         ]);
     } else {
