@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 include_once('includes/connection.php');
 
+
 // Normalize request URI
 $requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $basePath = '/redm-server/api';
@@ -63,6 +64,7 @@ $routes = [
     '/logs/deleteResponse' => 'routes/logs/deleteResponse.php',
     '/logs/restoreLog' => 'routes/logs/restoreLog.php',
     '/events/logs' => 'routes/events/logEvents.php',
+    '/websocket/handler' => 'routes/websocket/handler.php',
     '/clients/createClient' => 'routes/clients/createClient.php',
     '/clients/editClient' => 'routes/clients/editClient.php',
     '/clients/getAllClients' => 'routes/clients/getAllClients.php',

@@ -19,8 +19,14 @@ header('X-Accel-Buffering: no'); // Disable nginx buffering
 function sendSSE($eventType, $data) {
     echo "event: {$eventType}\n";
     echo "data: " . json_encode($data) . "\n\n";
-    ob_flush();
+    
+    if (ob_get_level() > 0) {
+        ob_end_flush();
+    }
     flush();
+    
+    // Log event for debugging
+    error_log("SSE Event sent - Type: {$eventType}, Data: " . json_encode($data));
 }
 
 // Keep track of last event time
