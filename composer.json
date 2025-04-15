@@ -7,13 +7,5 @@
         "cboden/ratchet": "^0.4.4",
         "react/socket": "^1.12",
         "react/event-loop": "^1.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "WebSocket\\": "websocket/src/"
-        }
-    },
-    "config": {
-        "optimize-autoloader": true
     }
 }

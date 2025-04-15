@@ -31,6 +31,8 @@ try{
     if (!isset($data['logId'], $data['message'], $data['title'], $data['firstName'], $data['lastName'], $data['email'])) {
         throw new Exception("All fields are required", 400);
     }
+
+    date_default_timezone_set('Africa/Lagos');
     
     $logId = trim($data['logId']);
     $message = trim($data['message']);
@@ -38,20 +40,24 @@ try{
     $firstName = trim($data['firstName']);
     $lastName = trim($data['lastName']);
     $email = trim($data['email']);
+    $backupDate = date('Y-m-d H:i:s');
+    $createdAt = trim($data['createdAt']) ?: $backupDate;
+    $createdAtDateTime = new DateTime($createdAt);
+    $createdAtDateTime->modify('+60 seconds');
+    $createdAt = $createdAtDateTime->format('Y-m-d H:i:s');
+    $updatedAt = date('Y-m-d H:i:s');
     $createdBy = $email;
     $updatedBy = $email;
 
 
-    date_default_timezone_set('Africa/Lagos');
-    $createdAt = date('Y-m-d H:i:s');
     
     
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO log_responses (logId, message, title, firstName, lastName, createdBy, updatedBy) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO log_responses (logId, message, title, firstName, lastName, createdBy, updatedBy, createdAt) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("sssssss", $logId, $message, $title, $firstName, $lastName, $createdBy, $updatedBy);
+    $stmt->bind_param("ssssssss", $logId, $message, $title, $firstName, $lastName, $createdBy, $updatedBy, $createdAt);
     
     
     if (!$stmt) {
@@ -72,7 +78,8 @@ try{
             "lastName" => $lastName,
             "createdBy" => $createdBy,
             "updatedBy" => $updatedBy,
-            "createdAt" => $createdAt
+            "createdAt" => $createdAt,
+            "updatedAt" => $updatedAt
         ];
 
         http_response_code(200);

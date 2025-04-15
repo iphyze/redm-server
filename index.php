@@ -64,7 +64,7 @@ $routes = [
     '/logs/deleteResponse' => 'routes/logs/deleteResponse.php',
     '/logs/restoreLog' => 'routes/logs/restoreLog.php',
     '/events/logs' => 'routes/events/logEvents.php',
-    '/websocket/handler' => 'routes/websocket/handler.php',
+    // '/websocket/handler' => 'routes/websocket/handler.php',
     '/clients/createClient' => 'routes/clients/createClient.php',
     '/clients/editClient' => 'routes/clients/editClient.php',
     '/clients/getAllClients' => 'routes/clients/getAllClients.php',
@@ -99,6 +99,7 @@ if (array_key_exists($relativePath, $routes)) {
 
 $dynamicRoutes = [
     '/logs/getSingleClientLog/(.+)' => 'routes/logs/getSingleClientLog.php',
+    '/websocket/handler/(.+)' => 'routes/websocket/handler.php',
     '/contacts/contactsByCategory/(.+)' => 'routes/contacts/contactsByCategory.php',
     '/clients/getSingleClient/(.+)' => 'routes/clients/getSingleClient.php',
     '/projects/getSingleProject/(.+)' => 'routes/projects/getSingleProject.php',
