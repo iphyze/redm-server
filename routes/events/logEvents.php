@@ -2,6 +2,7 @@
 require_once 'includes/connection.php';
 require_once 'includes/authMiddleware.php';
 require_once 'routes/events/reminderEvents.php';
+require_once 'routes/events/checkForNewEvents.php';
 
 // Verify user authentication
 $userData = authenticateUser();
@@ -37,41 +38,14 @@ while (true) {
         sendSSE($reminderEvent['type'], $reminderEvent['data']);
     }
 
-    // Check for new logs
-    $logsQuery = $conn->prepare("
-        SELECT * FROM logs 
-        WHERE createdAt > ? 
-        ORDER BY createdAt ASC
-    ");
-    $logsQuery->bind_param("s", $lastEventTime);
-    $logsQuery->execute();
-    $newLogs = $logsQuery->get_result()->fetch_all(MYSQLI_ASSOC);
-
-    // Check for new responses
-    $responsesQuery = $conn->prepare("
-        SELECT * FROM log_responses 
-        WHERE createdAt > ? 
-        ORDER BY createdAt ASC
-    ");
-    $responsesQuery->bind_param("s", $lastEventTime);
-    $responsesQuery->execute();
-    $newResponses = $responsesQuery->get_result()->fetch_all(MYSQLI_ASSOC);
-
-    // Send new logs
-    foreach ($newLogs as $log) {
-        sendSSE('newLog', $log);
-        $lastEventTime = $log['createdAt'];
+    // Check for new logs and responses
+    $newEvents = checkForNewEvents($conn, $lastEventTime);
+    foreach ($newEvents as $event) {
+        sendSSE($event['type'], $event['data']);
+        if (isset($event['data']['createdAt'])) {
+            $lastEventTime = $event['data']['createdAt'];
+        }
     }
-
-    // Send new responses
-    foreach ($newResponses as $response) {
-        sendSSE('newResponse', $response);
-        $lastEventTime = $response['createdAt'];
-    }
-
-    // Clear queries
-    $logsQuery->close();
-    $responsesQuery->close();
 
     // Prevent CPU overuse
     sleep(2);
@@ -84,3 +58,5 @@ while (true) {
 
 // Close connection when client disconnects
 $conn->close();
+
+?>

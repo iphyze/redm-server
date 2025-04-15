@@ -63,22 +63,32 @@ try{
     if ($stmt->execute()) {
         $id = $stmt->insert_id;
         
-            http_response_code(200);
-            echo json_encode([
+        $newResponseData = [
+            "id" => $id,
+            "message" => $message,
+            "title" => $title,
+            "logId" => intval($logId),
+            "firstName" => $firstName,
+            "lastName" => $lastName,
+            "createdBy" => $createdBy,
+            "updatedBy" => $updatedBy,
+            "createdAt" => $createdAt
+        ];
+
+        http_response_code(200);
+        echo json_encode([
             "status" => "Success",
             "message" => "The log has been added successfully!",
-            "data" => [
-                "id" => $id,
-                "message" => $message,
-                "title" => $title,
-                "logId" => intval($logId),
-                "firstName" => $firstName,
-                "lastName" => $lastName,
-                "createdBy" => $createdBy,
-                "updatedBy" => $updatedBy,
-                "createdAt" => $createdAt
-            ],
+            "data" => $newResponseData
         ]);
+    
+        // Store the event
+        $eventStmt = $conn->prepare("INSERT INTO events (type, data, created_at) VALUES (?, ?, ?)");
+        $eventType = 'newResponse';
+        $eventData = json_encode($newResponseData);
+        $eventStmt->bind_param("sss", $eventType, $eventData, $createdAt);
+        $eventStmt->execute();
+        $eventStmt->close();
     
     } else {
         throw new Exception("Failed to create log!", 500);

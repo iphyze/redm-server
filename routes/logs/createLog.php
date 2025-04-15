@@ -67,29 +67,38 @@ try{
     
     if ($stmt->execute()) {
         $id = $stmt->insert_id;
+
+        $newLogData = [
+            "id" => $id,
+            "message" => $message,
+            "title" => $title,
+            "userId" => $userId,
+            "firstName" => $firstName,
+            "lastName" => $lastName,
+            "email" => $email,
+            "projectId" => $projectId,
+            "projectTitle" => $projectTitle,
+            "clientId" => $clientId,
+            "clientName" => $clientName,
+            "createdBy" => $createdBy,
+            "updatedBy" => $updatedBy,
+            "createdAt" => $createdAt,
+            "contactType" => $contactType
+        ];
         
             http_response_code(200);
             echo json_encode([
             "status" => "Success",
             "message" => "The log has been added successfully!",
-            "data" => [
-                "id" => $id,
-                "message" => $message,
-                "title" => $title,
-                "userId" => $userId,
-                "firstName" => $firstName,
-                "lastName" => $lastName,
-                "email" => $email,
-                "projectId" => $projectId,
-                "projectTitle" => $projectTitle,
-                "clientId" => $clientId,
-                "clientName" => $clientName,
-                "createdBy" => $createdBy,
-                "updatedBy" => $updatedBy,
-                "createdAt" => $createdAt,
-                "contactType" => $contactType
-            ],
+            "data" => $newLogData,
         ]);
+
+        $eventStmt = $conn->prepare("INSERT INTO events (type, data, created_at) VALUES (?, ?, ?)");
+        $eventType = 'newLog';
+        $eventData = json_encode($newLogData);
+        $eventStmt->bind_param("sss", $eventType, $eventData, $createdAt);
+        $eventStmt->execute();
+        $eventStmt->close();
     
     } else {
         throw new Exception("Failed to create log!", 500);
