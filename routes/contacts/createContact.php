@@ -83,7 +83,7 @@ try{
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("ssssisisssss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy);
+    $stmt->bind_param("ssssisisssss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy, $contactType);
     
     
     if (!$stmt) {
