@@ -60,6 +60,7 @@ try{
     $categoryId = trim($data['categoryId']);
     $categoryName = trim($data['categoryName']);
     $comment = trim($data['comment']);
+    $status = trim($data['status']) ?: 'Pending';
     $userEmail = trim($data['userEmail']);
     $createdBy = $userEmail;
     $updatedBy = $userEmail;
@@ -73,17 +74,17 @@ try{
 
 
     if ($checkStmtResult->num_rows > 0) {
-        throw new Exception($organization . " already exists as an agent for " . $projectTitle, 400);
+        throw new Exception($organization . " already exists as an agent for " . $projectTitle, 401);
     }
 
 
     
     // Insert new user
-    $stmt = $conn->prepare("INSERT INTO contacts (organization, representative, tel, email, projectId, projectTitle, categoryId, categoryName, comment, createdBy, updatedBy, contactType) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO contacts (organization, representative, tel, email, projectId, projectTitle, categoryId, categoryName, comment, createdBy, updatedBy, contactType, status) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("ssssisisssss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy, $contactType);
+    $stmt->bind_param("ssssisissssss", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $createdBy, $updatedBy, $contactType, $status);
     
     
     if (!$stmt) {
@@ -112,7 +113,8 @@ try{
                 "comment" => $comment,
                 "createdBy" => $createdBy,
                 "updatedBy" => $updatedBy,
-                "contactType" => $contactType
+                "contactType" => $contactType,
+                "status" => $status
             ],
         ]);
     

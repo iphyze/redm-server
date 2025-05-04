@@ -66,6 +66,7 @@ try{
     $position = trim($data['position']);
     $clientCategory = trim($data['clientCategory']);
     $agent = trim($data['agent']);
+    $status = trim($data['status']);
     $project = trim($data['project']);
     $projectId = trim($data['projectId']);
     $userEmail = trim($data['userEmail']);
@@ -100,10 +101,10 @@ try{
 
     
     $stmt = $conn->prepare("UPDATE clients SET firstName = ?, lastName = ?, otherName = ?, title = ?, firstContactDate = ?, number = ?, email = ?,
-    company = ?, position = ?, clientCategory = ?, project = ?, projectId = ?, updatedBy = ?, updatedAt = ?, agent = ? WHERE id = ?");
+    company = ?, position = ?, clientCategory = ?, project = ?, projectId = ?, updatedBy = ?, updatedAt = ?, agent = ?, status = ? WHERE id = ?");
 
-    $stmt->bind_param("ssssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
-    $email, $company, $position, $clientCategory, $project, $projectId, $updatedBy, $updatedAt, $agent, $clientId);
+    $stmt->bind_param("sssssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
+    $email, $company, $position, $clientCategory, $project, $projectId, $updatedBy, $updatedAt, $agent, $status, $clientId);
     
     
     if (!$stmt) {
@@ -133,7 +134,8 @@ try{
                 "position" => $position,
                 "updatedBy" => $updatedBy,
                 "updatedAt" => $updatedAt,
-                "agent" => $agent
+                "agent" => $agent,
+                "status" => $status
             ],
         ]);
     

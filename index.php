@@ -103,6 +103,7 @@ $dynamicRoutes = [
     '/contacts/contactsByCategory/(.+)' => 'routes/contacts/contactsByCategory.php',
     '/clients/getSingleClient/(.+)' => 'routes/clients/getSingleClient.php',
     '/projects/getSingleProject/(.+)' => 'routes/projects/getSingleProject.php',
+    '/categories/getSingleCategory/(.+)' => 'routes/categories/getSingleCategory.php',
     '/contacts/getSingleContact/(.+)' => 'routes/contacts/getSingleContact.php',
     '/logs/getSingleLogResponses/(.+)' => 'routes/logs/getSingleLogResponses.php',
 ];

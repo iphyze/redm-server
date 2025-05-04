@@ -60,10 +60,11 @@ try{
     $company = trim($data['company']);
     $position = trim($data['position']);
     $clientCategory = trim($data['clientCategory']);
-    $agent = trim($data['agent']) || 'N/A';
+    $agent = trim($data['agent']) ?: 'N/A';
     $project = trim($data['project']);
     $projectId = trim($data['projectId']);
     $userEmail = trim($data['userEmail']);
+    $status = trim($data['status']) ?: 'Pending';
     $contactType = 'Secondary';
     $createdBy = $userEmail;
     $updatedBy = $userEmail;
@@ -86,12 +87,12 @@ try{
     
     // Insert new user
     $stmt = $conn->prepare("INSERT INTO clients (firstName, lastName, otherName, title, firstContactDate, number, email, 
-    company, position, clientCategory, project, projectId, createdBy, updatedBy, contactType, agent) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    company, position, clientCategory, project, projectId, createdBy, updatedBy, contactType, agent, status) 
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Make sure the number of placeholders matches the number of bind parameters
-    $stmt->bind_param("ssssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
-    $email, $company, $position, $clientCategory, $project, $projectId, $createdBy, $updatedBy, $contactType, $agent);
+    $stmt->bind_param("sssssssssssssssss", $firstName, $lastName, $otherName, $title, $firstContactDate, $number, 
+    $email, $company, $position, $clientCategory, $project, $projectId, $createdBy, $updatedBy, $contactType, $agent, $status);
     
     
     if (!$stmt) {
@@ -124,7 +125,8 @@ try{
                 "createdBy" => $createdBy,
                 "updatedBy" => $createdBy,
                 "contactType" => $contactType,
-                "agent" => $agent
+                "agent" => $agent,
+                "status" => $status
             ],
         ]);
     

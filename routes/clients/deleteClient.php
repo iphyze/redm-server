@@ -73,14 +73,14 @@
                 firstContactDate, number, email, company, 
                 position, contactType, createdAt, updatedAt, 
                 createdBy, updatedBy, clientCategory, project, 
-                projectId, clientId
+                projectId, agent, status, clientId
             ) 
             SELECT 
                 firstName, lastName, otherName, title,
                 firstContactDate, number, email, company,
                 position, contactType, createdAt, updatedAt,
                 createdBy, updatedBy, clientCategory, project,
-                projectId, id
+                projectId, agent, status, id
             FROM clients 
             WHERE id IN ($placeholders)";
 

@@ -62,6 +62,7 @@
         $projectTitle = trim($data['projectTitle']);
         $categoryId = intval(trim($data['categoryId']));
         $categoryName = trim($data['categoryName']);
+        $status = trim($data['status']);
         $comment = isset($data['comment']) ? trim($data['comment']) : '';
         $userEmail = trim($data['userEmail']);
         $createdBy = $userEmail;
@@ -93,8 +94,8 @@
     
         // Update contact
         $stmt = $conn->prepare("UPDATE contacts SET organization = ?, representative = ?, 
-        tel = ?, email = ?, projectId = ?, projectTitle = ?, categoryId = ?, categoryName = ?, comment = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
-        $stmt->bind_param("ssssisissssi", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $updatedBy, $updatedAt, $contactId);
+        tel = ?, email = ?, projectId = ?, projectTitle = ?, categoryId = ?, categoryName = ?, comment = ?, status = ?, updatedBy = ?, updatedAt = ? WHERE id = ?");
+        $stmt->bind_param("ssssisisssssi", $organization, $representative, $tel, $email, $projectId, $projectTitle, $categoryId, $categoryName, $comment, $status, $updatedBy, $updatedAt, $contactId);
         
         if (!$stmt) {
             throw new Exception("Database error: Failed to prepare statement", 500);
@@ -123,6 +124,7 @@
                     "categoryId" => $updatedData['categoryId'],
                     "categoryName" => $updatedData['categoryName'],
                     "comment" => $updatedData['comment'],
+                    "status" => $updatedData['status'],
                     "createdBy" => $updatedData['createdBy'],
                     "updatedBy" => $updatedData['updatedBy'],
                     "updatedAt" => $updatedData['updatedAt'],

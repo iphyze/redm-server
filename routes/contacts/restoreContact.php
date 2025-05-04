@@ -63,12 +63,12 @@
             $restoreQuery = "INSERT INTO contacts (
                 id, organization, representative, tel, email,
                 projectId, projectTitle, categoryId, categoryName,
-                comment, createdAt, updatedAt, createdBy, updatedBy, contactType
+                comment, status, createdAt, updatedAt, createdBy, updatedBy, contactType
             )
             SELECT 
                 contactId, organization, representative, tel, email,
                 projectId, projectTitle, categoryId, categoryName,
-                comment, createdAt, updatedAt, createdBy, updatedBy, contactType
+                comment, status, createdAt, updatedAt, createdBy, updatedBy, contactType
             FROM contact_trash 
             WHERE contactId IN ($placeholders)";
 

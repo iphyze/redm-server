@@ -71,12 +71,12 @@
             $insertQuery = "INSERT INTO contact_trash (
                 organization, representative, tel, email, 
                 projectId, projectTitle, categoryId, categoryName, 
-                comment, createdAt, updatedAt, createdBy, updatedBy, contactType, contactId
+                comment, status, createdAt, updatedAt, createdBy, updatedBy, contactType, contactId
             ) 
             SELECT 
                 organization, representative, tel, email,
                 projectId, projectTitle, categoryId, categoryName,
-                comment, createdAt, updatedAt, createdBy, updatedBy, contactType, id
+                comment, status, createdAt, updatedAt, createdBy, updatedBy, contactType, id
             FROM contacts 
             WHERE id IN ($placeholders)";
 

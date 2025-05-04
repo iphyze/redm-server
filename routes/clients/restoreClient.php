@@ -65,14 +65,14 @@
                 firstContactDate, number, email, company,
                 position, contactType, createdAt, updatedAt,
                 createdBy, updatedBy, clientCategory, project,
-                projectId
+                projectId, agent, status
             )
             SELECT 
                 clientId, firstName, lastName, otherName, title,
                 firstContactDate, number, email, company,
                 position, contactType, createdAt, updatedAt,
                 createdBy, updatedBy, clientCategory, project,
-                projectId
+                projectId, agent, status
             FROM client_trash 
             WHERE clientId IN ($placeholders)";
 
