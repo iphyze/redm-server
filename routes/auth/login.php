@@ -7,7 +7,7 @@ use Respect\Validation\Validator as v;
 use Dotenv\Dotenv;
 
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 try {
     // Load environment variables

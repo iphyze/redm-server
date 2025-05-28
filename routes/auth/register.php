@@ -14,7 +14,7 @@ $dotenv = Dotenv::createImmutable('./');
 $dotenv->load();
 
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 
 try{

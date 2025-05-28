@@ -7,7 +7,7 @@ require_once 'includes/connection.php';
 require_once 'includes/authMiddleware.php';
 
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 
 try{
