@@ -67,8 +67,8 @@ try{
     $contactType = "Primary";
     
 
-    $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? && projectId = ?");
-    $checkStmt->bind_param("si", $organization, $projectId);
+    $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? && representative = ? && projectId = ?");
+    $checkStmt->bind_param("ssi", $organization, $representative, $projectId);
     $checkStmt->execute();
     $checkStmtResult = $checkStmt->get_result();
 

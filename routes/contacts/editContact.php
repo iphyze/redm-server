@@ -83,8 +83,8 @@
         }
     
         // Check for duplicate name
-        $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? AND projectId = ? AND id != ?");
-        $checkStmt->bind_param("sii", $organization, $projectId, $contactId);
+        $checkStmt = $conn->prepare("SELECT * FROM contacts WHERE organization = ? AND && representative = ? AND projectId = ? AND id != ?");
+        $checkStmt->bind_param("ssii", $organization, $representative, $projectId, $contactId);
         $checkStmt->execute();
         $checkStmtResult = $checkStmt->get_result();
     
